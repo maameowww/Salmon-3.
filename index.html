@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บอกรักไอ้ม่อนเหมือนเดิม</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('heart.gif'); /* เปลี่ยน URL นี้เป็น URL ของภาพที่คุณต้องการ */
+            background-size: cover; /* ให้ภาพครอบคลุมพื้นที่ของหน้าจอ */
+            background-position: center; /* ตั้งให้ภาพอยู่กลาง */
+            background-repeat: no-repeat; /* ห้ามซ้ำภาพ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+            color: white; /* กำหนดสีตัวหนังสือให้ตัดกับภาพพื้นหลัง */
+        }
+
+        h1 {
+            font-size: 3rem;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        p {
+            font-size: 1.5rem;
+            animation: popUp 2s ease-in-out;
+        }
+
+        /* รูปหัวใจที่เด้งขึ้น */
+        .heart {
+            width: 120px; /* ขนาดของรูปหัวใจ */
+            animation: bounce 1s infinite alternate;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .heart:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes popUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* การแสดงข้อความ */
+        .new-message {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff69b4; /* สีชมพูอ่อน */
+            opacity: 0;
+            animation: showMessage 4s forwards;
+            margin-top: 20px;
+        }
+
+        @keyframes showMessage {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        /* การกำหนดตำแหน่งให้รูปภาพอยู่ที่มุมขวาบน */
+        .top-right-image {
+            position: absolute;
+            top: 20px; /* ระยะห่างจากขอบบน */
+            right: 20px; /* ระยะห่างจากขอบขวา */
+            width: 300px; /* ขนาดของภาพ */
+            height: 300px; /* ขนาดของภาพ */
+            object-fit: cover; /* ปรับขนาดภาพให้พอดีกับกรอบ */
+        }
+
+        /* การเคลื่อนไหวของรูปภาพที่เพิ่มขึ้นจากด้านล่าง */
+        .bounce-up {
+            position: absolute;
+            bottom: -100px; /* เริ่มที่ด้านล่าง */
+            animation: bounceUp 3s forwards, fadeOut 3s 3s forwards;
+        }
+
+        @keyframes bounceUp {
+            0% {
+                transform: translateY(100px); /* เริ่มต้นจากด้านล่าง */
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-100vh); /* เด้งขึ้นไปที่ด้านบนสุดของจอ */
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0; /* ทำให้จางหายไป */
+            }
+        }
+
+        /* Progress bar ที่มุมขวาล่าง */
+        .progress-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 25px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #ff69b4; /* สีชมพู */
+            border-radius: 15px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-number {
+            position: absolute;
+            bottom: -30px;
+            right: 10px;
+            font-size: 1.2rem;
+            color: #ff0000;
+        }
+
+        /* รูปภาพที่จะโผล่มากลางหน้าจอ */
+        .popup-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            width: 500px;
+            height: 500px;
+            animation: popUpImage 2s ease-out;
+        }
+
+        @keyframes popUpImage {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
+
+        /* แสดงข้อความพิเศษหลังคลิกครบ 30 ครั้ง */
+        .special-message {
+            font-size: 5rem;
+            color: #ff0000;
+            font-weight: bold;
+            margin-top: 100px;
+            opacity: 0;
+            animation: showSpecialMessage 10s forwards;
+        }
+
+        @keyframes showSpecialMessage {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>กุว่างเฉยๆ อยากเขียนเล่น</h1>
+    <p>ลองกดดู</p>
+
+    <!-- รูปหัวใจที่เด้งขึ้น -->
+    <img src="pink.gif" class="heart" onclick="addMessage()" alt="Heart Image">
+
+    <div id="messageContainer"></div>
+
+    <!-- รูปภาพที่มุมขวาบน -->
+    <img src="bunny.gif" class="top-right-image" alt="Love Image">
+
+    <!-- Progress bar -->
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+        <div id="progressNumber" class="progress-number">0/30</div>
+    </div>
+
+    <!-- รูปภาพที่โผล่มาเมื่อครบ 5 ครั้ง -->
+    <img src="5.gif" id="popupImage" class="popup-image" alt="Success Image">
+
+    <script>
+        // สร้างอาร์เรย์ของข้อความที่เราต้องการสุ่ม
+        const messages = [
+            "รักแซลม่อนนะฮ้าฟฟฟ",
+            "รักมั่กๆ จุ๊ฟฟมั๊วะะะ",
+            "กุรักมึงนะ",
+            "เป็นเหี้ยไรชอบทำตัวน่ารัก",
+            "แซลม่อนน่ารักมากกก",
+            "มึงรักกุไหมมม"
+        ];
+
+        let clickCount = 0;
+
+        // ฟังก์ชันเพื่อสุ่มข้อความจากอาร์เรย์
+        function getRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * messages.length); // เลือกข้อความแบบสุ่ม
+            return messages[randomIndex]; // ส่งคืนข้อความที่สุ่มได้
+        }
+
+        function addMessage() {
+            // เพิ่มการนับจำนวนคลิก
+            clickCount++;
+
+            // อัปเดต Progress Bar
+            updateProgressBar();
+
+            // สร้างรูปภาพใหม่ที่จะแสดงขึ้นมา
+            const newImage = document.createElement('img');
+            newImage.src = 'love.gif'; // เปลี่ยน URL เป็นภาพที่ต้องการแสดง
+            newImage.classList.add('bounce-up');
+            newImage.alt = 'Appearing Image';
+
+            // เพิ่มรูปภาพใหม่ลงในหน้า
+            document.body.appendChild(newImage);
+
+            // สุ่มข้อความจากอาร์เรย์
+            const randomMessage = getRandomMessage(); 
+
+            // เพิ่มข้อความที่จะแสดงหลังจากคลิก
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('new-message');
+            newMessage.innerText = randomMessage; // ใส่ข้อความที่สุ่มไว้
+            document.body.appendChild(newMessage);
+
+            // หลังจากภาพแสดงแล้วจะหายไปภายใน 6 วินาที
+            setTimeout(() => {
+                newImage.remove();
+                newMessage.remove();
+            }, 6000); // 6000ms = 6 วินาที
+
+            // เมื่อคลิกครบ 5 ครั้ง (หรือจำนวนที่ต้องการ)
+            if (clickCount % 5 === 0) {
+                showPopupImage();
+            }
+
+            // เมื่อคลิกครบ 30 ครั้ง เพิ่มข้อความพิเศษ
+            if (clickCount === 30) {
+                showSpecialMessage();
+            }
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const progress = (clickCount / 30) * 100; // คำนวณเปอร์เซ็นต์
+            progressBar.style.width = `${progress}%`;
+
+            // แสดงตัวเลขข้าง Progress Bar
+            const progressNumber = document.getElementById('progressNumber');
+            progressNumber.innerText = `${clickCount}/30`;
+
+            // ถ้าคลิกครบ 30 ครั้ง ให้รีเซ็ต progress bar
+            if (clickCount === 30) {
+                setTimeout(() => {
+                    progressBar.style.width = '0%'; // รีเซ็ต progress bar
+                    progressNumber.innerText = `0/30`;
+                }, 1000);
+            }
+        }
+
+        function showPopupImage() {
+            const popupImage = document.getElementById('popupImage');
+            popupImage.style.display = 'block';
+
+            setTimeout(() => {
+                popupImage.style.display = 'none'; // ซ่อนภาพหลังจากแสดง
+            }, 2000); // ซ่อนหลังจาก 2 วินาที
+        }
+
+        function showSpecialMessage() {
+            const specialMessage = document.createElement('div');
+            specialMessage.classList.add('special-message');
+            specialMessage.innerText = "เออกูรู้แล้วว่ามึงรักกู กดขนาดนี้"; // ข้อความที่จะแสดงเมื่อคลิกครบ 30 ครั้ง
+            document.body.appendChild(specialMessage);
+
+            // ลบข้อความหลังจาก 5 วินาที
+            setTimeout(() => {
+                specialMessage.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
